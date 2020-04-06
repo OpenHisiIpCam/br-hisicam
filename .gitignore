@@ -1,0 +1,7 @@
+buildroot-2020.02.tar.gz
+buildroot-2020.02/
+buildroot-2019.11.1.tar.gz
+buildroot-2019.11.1/
+output/
+tftp
+**/*.pyc

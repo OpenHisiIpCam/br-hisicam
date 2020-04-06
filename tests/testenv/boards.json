@@ -1,0 +1,87 @@
+{
+    "jvt_s274h19v-l29_hi3519v101_imx274": {
+        "serial": "/dev/ttyCAM1",
+        "power_num": 1,
+        "ip_addr": "192.168.10.101"
+    },
+    "xm_ivg-85hf20pya-s_hi3516ev200_imx307": {
+        "serial": "/dev/ttyCAM2",
+        "power_num": 2,
+        "ip_addr": "192.168.10.102"
+    },
+    "xm_53h20-s_hi3516cv100_imx122": {
+        "serial": "/dev/ttyCAM3",
+        "power_num": 3,
+        "ip_addr": "192.168.10.103"
+    },
+    "xm_ivg-hp203y-se_hi3516cv300_imx291": {
+        "serial": "/dev/ttyCAM4",
+        "power_num": 4,
+        "ip_addr": "192.168.10.104"
+    },
+    "xm_ivg-hp201y-se_hi3516cv300_imx323": {
+        "serial": "/dev/ttyCAM5", 
+        "power_num": 5, 
+        "ip_addr": "192.168.10.105"
+    },     
+    "jvt_s323h16xf_hi3516cv300_imx323": {
+        "serial": "/dev/ttyCAM6", 
+        "power_num": 6, 
+        "ip_addr": "192.168.10.106"
+    },
+    "ruision_rs-h622qm-b0_hi3516cv300_imx323": {
+        "serial": "/dev/ttyCAM7", 
+        "power_num": 7, 
+        "ip_addr": "192.168.10.107"
+    },
+    "xm_ivg-85hg50pya-s_hi3516ev300_imx335": {
+        "serial": "/dev/ttyCAM8", 
+        "power_num": 8, 
+        "ip_addr": "192.168.10.108"
+    },
+        "xm_ipg-83h50p-b_hi3516av100_imx178": {
+        "serial": "/dev/ttyCAM9",
+        "power_num": 9,
+        "ip_addr": "192.168.10.109"
+    },  
+    "xm_ipg-83he20py-s_hi3516ev100_imx323": {
+        "serial": "/dev/ttyCAM10",
+        "power_num": 10,
+        "ip_addr": "192.168.10.110"
+    },
+    "xm_ivg-83h80nv-be_hi3516av200_os08a10": {
+        "serial": "/dev/ttyCAM11",
+        "power_num": 11,
+        "ip_addr": "192.168.10.111"
+    },
+    "ssqvision_on335h16d_hi3516dv300_imx335": {
+        "serial": "/dev/ttyCAM13",
+        "power_num": 13,
+        "ip_addr": "192.168.10.113"
+    },
+    "jvt_s226h19v-l29_hi3519v101_imx226": {
+        "serial": "/dev/ttyCAM14",
+        "power_num": 14,
+        "ip_addr": "192.168.10.114"
+    },
+    "xm_53h20-ae_hi3516cv100_imx222": { 
+        "serial": "/dev/ttyCAM15",
+        "power_num": 15,
+        "ip_addr": "192.168.10.115"
+    },
+    "xm_83h40pl-b_hi3516av100_ov4689": {
+        "serial": "/dev/ttyCAM16",
+        "power_num": 16,
+        "ip_addr": "192.168.10.116"
+    },
+    "ssqvision_unknown_hi3519v101_imx326": {
+        "serial": "/dev/ttyCAM17",
+        "power_num": 17,
+        "ip_addr": "192.168.10.117"
+    },
+    "ssqvision_on290h16d_hi3516dv100_imx290": {
+        "serial": "/dev/ttyCAM18",
+        "power_num": 18,
+        "ip_addr": "192.168.10.118"
+    }
+}

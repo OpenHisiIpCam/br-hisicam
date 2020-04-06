@@ -1,0 +1,3 @@
+[submodule "hiburn"]
+	path = hiburn
+	url = https://github.com/OpenHisiIpCam/hiburn

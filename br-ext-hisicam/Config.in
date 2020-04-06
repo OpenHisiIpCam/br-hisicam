@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_HISICAM_PATH/package/hisi_patcher/Config.in"
+source "$BR2_EXTERNAL_HISICAM_PATH/linux/Config.ext.in"
