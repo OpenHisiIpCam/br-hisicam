@@ -57,12 +57,13 @@ class BrHisiCam:
     def _get_config_list(self):
         return self._get_make_output_lines(["list-configs"])
 
-    def make_board(self, board_id):
-        subprocess.check_call([
-            "make",
-            f"BR2_ROOTFS_POST_BUILD_SCRIPT={TESTENV_DIR}/rootfs_post_build.sh",
-            f"{board_id}_defconfig",
-        ], cwd=self.root)
+    def make_board(self, board_id, rootfs_overlays=None):
+        params = [
+            f"BR2_ROOTFS_POST_BUILD_SCRIPT={TESTENV_DIR}/rootfs_post_build.sh"
+        ]
+        if rootfs_overlays is not None:
+            params.append(f"BR2_ROOTFS_OVERLAY=\"{' '.join(rootfs_overlays)}\"")
+        subprocess.check_call(["make", *params, f"{board_id}_defconfig"], cwd=self.root)
 
     def info(self, board_id):
         info = {}
