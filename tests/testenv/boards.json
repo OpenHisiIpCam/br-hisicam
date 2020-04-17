@@ -69,7 +69,7 @@
         "power_num": 15,
         "ip_addr": "192.168.10.115"
     },
-    "xm_83h40pl-b_hi3516av100_ov4689": {
+    "xm_83h40pl-b_hi3516dv100_ov4689": {
         "serial": "/dev/ttyCAM16",
         "power_num": 16,
         "ip_addr": "192.168.10.116"

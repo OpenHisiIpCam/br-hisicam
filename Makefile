@@ -23,9 +23,9 @@ prepare: buildroot-$(BR_VER)
 
 
 %_info:
-	@cat $(BR_EXT_HISICAM)/board/`echo $@ | cut -d "_" -f 1`/$(subst _info,,$@)/config | grep RAM_LINUX_SIZE
+	@cat $(BR_EXT_HISICAM)/board/$(subst _info,,$@)/config | grep RAM_LINUX_SIZE
 	$(eval VENDOR 	:= $(shell echo $@ | cut -d "_" -f 1))
-	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM)/board/$(VENDOR)/$(subst _info,,$@)/config | grep FAMILY | cut -d "=" -f 2))
+	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM)/board/$(subst _info,,$@)/config | grep FAMILY | cut -d "=" -f 2))
 	$(eval CHIP	:= $(shell echo $@ | cut -d "_" -f 3))
 	@cat $(BR_EXT_HISICAM)/board/$(FAMILY)/$(CHIP).config
 
