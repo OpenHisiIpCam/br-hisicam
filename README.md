@@ -260,7 +260,7 @@ usually (but not always) that chip is most powerfull chip across the family.
 
 | chips                                                 | family        | kernel |
 |-------------------------------------------------------|---------------|--------|
-| hi3516av100, hi3516dv100                              | hi3516av100   |3.4.35  |
+| hi3516av100, hi3516dv100                              | hi3516av100   |4.9.37  |
 | hi3519v101,  hi3516av200                              | hi3516av200   |3.18.20 |
 | hi3516cv100, hi3518cv100, hi3518ev100                 | hi3516cv100   |3.0.8   |
 | hi3516cv200, hi3518ev200, hi3518ev201                 | hi3516cv200   |4.9.37  |
