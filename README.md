@@ -20,7 +20,7 @@
 ## :eyeglasses: About <a name="about"></a>
 
 Main task of this repo is to bring ability to run [GoHisiCam](https://github.com/OpenHisiIpCam/gohisicam-releases) application
-(*Audio/video core software for HiSilicon`s System-On-a-Chip ip cameras written in Go and C*). 
+(*Audio/video core software for HiSilicon`s System-On-a-Chip ip cameras written in Go and C*).
 Also this repo can be used as starting point for ip camera research or some other associated project.
 
 Here term **firmware** means full set of software needed for running embedded device. In our case it is bootloader, Linux kernel, filesystem, 
