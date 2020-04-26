@@ -83,5 +83,10 @@
         "serial": "/dev/ttyCAM18",
         "power_num": 18,
         "ip_addr": "192.168.10.118"
+    },
+    "unknown_unknown_xm530_unknown": {
+        "serial": "/dev/ttyCAM30",
+        "power_num": 30,
+        "ip_addr": "192.168.10.130"
     }
 }

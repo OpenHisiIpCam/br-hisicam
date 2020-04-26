@@ -38,7 +38,7 @@ most probably have same system dependency packages names, on other distros satis
 
 **1.** Clone repo:
 ```console
-foo@bar:~$ git clone --recursive https://github.com/OpenHisiIpCam/br-firmware --depth 1
+foo@bar:~$ git clone --recursive https://github.com/OpenHisiIpCam/br-hisicam --depth 1
 ```
 
 **2.** Install required system packages:
