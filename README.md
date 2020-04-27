@@ -146,7 +146,7 @@ hisilicon # setenv ipaddr 192.168.1.100; setenv netmask 255.255.255.0;  setenv s
 **2.** Download kernel and rootfs images from your host machine tftp server
 ```console
 hisilicon # tftp 0x82000000 uImage
-hisilicon # tftp 0x82400000 rootfs.squshfs
+hisilicon # tftp 0x82400000 rootfs.squashfs
 ```
 
 **3.** Setup kernel boot params.
