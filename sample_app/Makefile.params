@@ -1,0 +1,15 @@
+BOARD			:= jvt_s226h19v-l29_hi3519v101_imx226
+TOOLCHAIN_DIR	:= $(abspath ../output/$(BOARD)/host)
+TOOLCHAIN_NAME	:= arm-buildroot-linux-uclibcgnueabi
+
+################################################################################
+
+TOOLCHAIN     	:= $(TOOLCHAIN_DIR)/bin/$(TOOLCHAIN_NAME)-
+
+CC      		:= $(TOOLCHAIN)gcc
+AR      		:= $(TOOLCHAIN)ar
+LD      		:= $(TOOLCHAIN)ld
+RANLIB  		:= $(TOOLCHAIN)ranlib
+NM      		:= $(TOOLCHAIN_NAME)-nm
+STRIP   		:= $(TOOLCHAIN_NAME)-strip
+
