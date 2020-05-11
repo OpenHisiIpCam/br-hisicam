@@ -1,0 +1,65 @@
+vendor: JVT
+model: S274H19V-L29
+chip: hi3519v101
+ethernet:
+    phychip: rtl8201
+    connection: rmii    #mii/rmii/gmii/rgmii
+    phyaddr: 1
+cmos:
+    vendor: sony
+    model: imx274
+    control:
+        type: spi
+        bus: 0
+    data:
+        type: subLVDS
+        lanes:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+
+#imx327 hi3516ev200 example
+#cmos:
+#   vendor: sony
+#   model: imx327
+#   control:
+#   data:
+#       type: mipi
+#       lanes:
+#           - 0
+#           - 2
+#           - -1
+#           - -1
+#imx327 hi3516cv500 example
+#cmos:
+#   vendor: sony
+#   model: imx327
+#   control:
+#   data:
+#       type: mipi
+#       lanes:
+#           - 0
+#           - 1
+#           - 2
+#           - 3
+#
+
+ram:
+    total: 512M
+    chips:
+        - dfsdf
+        - asdfsdf
+rom:
+
+features:
+    - usb
+
+docs:
+

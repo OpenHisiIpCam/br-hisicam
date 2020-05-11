@@ -1,0 +1,16 @@
+vendor: XM
+model: IVG-HP203Y-SE
+chip: hi3516cv300
+cmos:
+    vendor: sony
+    model: imx290
+    control:
+        type: i2c
+        bus: 0
+    data:
+        type: LVDS
+        lanes:
+            - 1
+            - 0
+            - 3
+            - 2
