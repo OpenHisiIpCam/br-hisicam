@@ -14,8 +14,8 @@ usage help:
 	- make prepare - download and unpack buildroot\n\
 	- make list-configs - show avalible hardware configs list\n\
 	- make BOARD=<BOARD-ID> all - build all needed for a board (toolchain, kernel and rootfs images)\n\
-	- make overlayed-rootfs-<FS-TYPE> - create rootfs image that contains original Buildroot target dir\n\
-	  overlayed by some custom layers"
+	- make overlayed-rootfs-<FS-TYPE> ROOTFS_OVERLAYS=... - create rootfs image that contains original Buildroot target dir\n\
+	  overlayed by some custom layers. Example: make overlayed-rootfs-squashfs ROOTFS_OVERLAYS=./examples/echo_server/overlay"
 
 buildroot-$(BR_VER).tar.gz:
 	wget https://buildroot.org/downloads/buildroot-$(BR_VER).tar.gz
