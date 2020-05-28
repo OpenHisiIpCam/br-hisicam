@@ -1,10 +1,11 @@
-BR_EXT_HISICAM := br-ext-hisicam
-BR_VER := 2020.02
-BOARDS := $(shell ls -1 $(BR_EXT_HISICAM)/configs)
-
+ROOT_DIR           := $(CURDIR)
+BR_VER             := 2020.02
+BR_DIR             := $(ROOT_DIR)/buildroot-$(BR_VER)
+BR_EXT_HISICAM_DIR := $(ROOT_DIR)/br-ext-hisicam
+SCRIPTS_DIR        := $(ROOT_DIR)/scripts
+BOARDS             := $(shell ls -1 $(BR_EXT_HISICAM_DIR)/configs)
 
 .PHONY: usage help prepare install-ubuntu-deps all run-tests overlayed-rootfs-%
-
 
 usage help:
 	@echo \
@@ -17,13 +18,13 @@ usage help:
 	- make overlayed-rootfs-<FS-TYPE> ROOTFS_OVERLAYS=... - create rootfs image that contains original Buildroot target dir\n\
 	  overlayed by some custom layers. Example: make overlayed-rootfs-squashfs ROOTFS_OVERLAYS=./examples/echo_server/overlay"
 
-buildroot-$(BR_VER).tar.gz:
-	wget https://buildroot.org/downloads/buildroot-$(BR_VER).tar.gz
+$(ROOT_DIR)/buildroot-$(BR_VER).tar.gz:
+	wget -O $@ https://buildroot.org/downloads/buildroot-$(BR_VER).tar.gz
 
-buildroot-$(BR_VER): buildroot-$(BR_VER).tar.gz
-	tar -xf buildroot-$(BR_VER).tar.gz
+$(BR_DIR): $(ROOT_DIR)/buildroot-$(BR_VER).tar.gz
+	tar -C $(ROOT_DIR) -xf buildroot-$(BR_VER).tar.gz
 
-prepare: buildroot-$(BR_VER)
+prepare: $(BR_DIR)
 
 install-ubuntu-deps:
 	apt-get install wget build-essential make libncurses-dev
@@ -41,16 +42,12 @@ list-configs:
 
 
 # -------------------------------------------------------------------------------------------------
-ROOT_DIR           := $(CURDIR)
-BR_EXT_HISICAM_DIR := $(ROOT_DIR)/$(BR_EXT_HISICAM)
-SCRIPTS_DIR        := $(ROOT_DIR)/scripts
-
 OUT_DIR ?= $(ROOT_DIR)/output
 
 # Buildroot considers relative paths relatively to its' own root directory. So we use absolute paths
 # to avoid ambiguity
 override OUT_DIR := $(abspath $(OUT_DIR))
-BOARD_MAKE := $(MAKE) -C buildroot-$(BR_VER) BR2_EXTERNAL=$(BR_EXT_HISICAM_DIR) O=$(OUT_DIR)
+BOARD_MAKE := $(MAKE) -C $(BR_DIR) BR2_EXTERNAL=$(BR_EXT_HISICAM_DIR) O=$(OUT_DIR)
 
 
 $(OUT_DIR)/.config:
@@ -61,7 +58,7 @@ endif
 
 
 $(OUT_DIR)/toolchain-params.mk: $(OUT_DIR)/.config
-	eval $$($(BOARD_MAKE) -s VARS=GNU_TARGET_NAME printvars) \
+	eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
 		&& $(SCRIPTS_DIR)/create_toolchain_binding.sh $(OUT_DIR)/host/bin $$GNU_TARGET_NAME > $@
 
 
@@ -95,7 +92,7 @@ br-%: $(OUT_DIR)/.config
 
 # -------------------------------------------------------------------------------------------------
 run-tests:
-	$(MAKE) -C tests
+	$(MAKE) -C $(ROOT_DIR)/tests
 
 
 # -------------------------------------------------------------------------------------------------
