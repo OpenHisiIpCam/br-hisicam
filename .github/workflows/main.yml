@@ -21,15 +21,7 @@ jobs:
     - name: Build something
       run: |
         whoami
-        hostname --fqdn
-        echo "------------------------------------------------"
-        mkdir -p $GITHUB_WORKSPACE/tryit
-        echo -e "
-        all:
-        \teval A=123
-        \techo HERE: A=$$A
-        " >$GITHUB_WORKSPACE/tryit/Makefile
-        make -C $GITHUB_WORKSPACE/tryit
-        echo "------------------------------------------------"
         make -C $GITHUB_WORKSPACE prepare
-        make -C $GITHUB_WORKSPACE BOARD=jvt_s274h19v-l29_hi3519v101_imx274 all
+        make -C $GITHUB_WORKSPACE BOARD=jvt_s274h19v-l29_hi3519v101_imx274 all \
+        || make -C buildroot-2020.02 BR2_EXTERNAL=/home/runner/work/br-hisicam/br-hisicam/br-ext-hisicam O=/home/runner/work/br-hisicam/br-hisicam/output -s VARS=GNU_TARGET_NAME printvars
+        
