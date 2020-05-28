@@ -23,4 +23,4 @@ jobs:
         whoami
         hostname --fqdn
         make -C $GITHUB_WORKSPACE prepare
-        make -C $GITHUB_WORKSPACE jvt_s274h19v-l29_hi3519v101_imx274_defconfig
+        make -C $GITHUB_WORKSPACE BOARD=jvt_s274h19v-l29_hi3519v101_imx274 all
