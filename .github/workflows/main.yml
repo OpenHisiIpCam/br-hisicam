@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Build something
       run: |
-        whoami
-        hostname --fqdn
-        make -C $GITHUB_WORKSPACE prepare
-        make -C $GITHUB_WORKSPACE jvt_s274h19v-l29_hi3519v101_imx274_defconfig
+        cd $GITHUB_WORKSPACE
+        make prepare
+        make BOARD=jvt_s274h19v-l29_hi3519v101_imx274 all
+        

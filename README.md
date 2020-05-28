@@ -60,12 +60,16 @@ jvt_s274h19v-l29_hi3519v101_imx274
 unknown_unknown_hi3519v101_unknown
 ```
 
-**5.** Build kernel and rootfs for choosen module:
+**5.** Build toolchain, kernel and rootfs for choosen module:
 ```console
-foo@bar:~$ make jvt_s274h19v-l29_hi3519v101_imx274_defconfig
+foo@bar:~$ make BOARD=jvt_s274h19v-l29_hi3519v101_imx274 all
 ```
-> During build step, toolchain will be generated from scratch, that takes time and requires all deps sources to be downloaded.
-> Download data amount is about 200MB.
+> During build step, toolchain will be generated from scratch, that takes time and requires all
+> deps sources to be downloaded. Downloaded data is about 200MB.
+
+All artifacts reside in output directory that is `./output` by default. However you may override it
+with `OUT_DIR=path/to/my/output` make variable. This output directory will be referenced below as
+`OUT_DIR`.
 
 :clock1230: Overall build process (dependencies download time not included) can take:
 * about 15 minutes on Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz, 16GB RAM
@@ -73,9 +77,9 @@ foo@bar:~$ make jvt_s274h19v-l29_hi3519v101_imx274_defconfig
 * about 50 minutes on Intel(R) Core(TM) i7-5500U CPU @ 2.40GHz, 8GB RAM
 * about 22 minuts on Intel(R) Core(TM) i5-8250U CPU @ 1.6GHz, 8GB RAM
 
-Directory `output/{module-name}/images` contains kernel and rootfs images:
+Directory `OUT_DIR/images` contains kernel and rootfs images:
 ```console
-foo@br:~/br-firmware/output/jvt_s274h19v-l29_hi3519v101_imx274/images$ tree .
+foo@br:~/br-firmware/output/images$ tree .
 .
 ├── rootfs.squashfs	# XZ compressed SquashFS root file system
 └── uImage		# U-Boot wrapped XZ compressed kernel image

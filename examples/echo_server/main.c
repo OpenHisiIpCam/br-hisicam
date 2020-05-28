@@ -14,7 +14,7 @@
 void process_connection(int sockfd)
 {
     char buff[1024] = "YOU SAID: ";
-    const ssize_t len = recv(sockfd, buff + 10, sizeof(buff), 0);
+    const ssize_t len = recv(sockfd, buff + 10, sizeof(buff) - 10, 0);
     if (len > 0) {
         send(sockfd, buff, 10 + len, 0);
     }
