@@ -23,5 +23,7 @@ jobs:
         whoami
         hostname --fqdn
         echo $SHELL
+        eval BLA_BLA="OUCH14"
+        echo $BLA_BLA
         make -C $GITHUB_WORKSPACE prepare
         make -C $GITHUB_WORKSPACE BOARD=jvt_s274h19v-l29_hi3519v101_imx274 all
