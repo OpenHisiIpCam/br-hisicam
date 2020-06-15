@@ -30,15 +30,15 @@ install-ubuntu-deps:
 	apt-get install wget build-essential make libncurses-dev
 
 %_info:
-	@cat $(BR_EXT_HISICAM)/board/$(subst _info,,$@)/config | grep RAM_LINUX_SIZE
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(subst _info,,$@)/config | grep RAM_LINUX_SIZE
 	$(eval VENDOR 	:= $(shell echo $@ | cut -d "_" -f 1))
-	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM)/board/$(subst _info,,$@)/config | grep FAMILY | cut -d "=" -f 2))
+	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM_DIR)/board/$(subst _info,,$@)/config | grep FAMILY | cut -d "=" -f 2))
 	$(eval CHIP	:= $(shell echo $@ | cut -d "_" -f 3))
-	@cat $(BR_EXT_HISICAM)/board/$(FAMILY)/$(CHIP).config
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(FAMILY)/$(CHIP).config
 
 
 list-configs:
-	@ls -1 $(BR_EXT_HISICAM)/configs
+	@ls -1 $(BR_EXT_HISICAM_DIR)/configs
 
 
 # -------------------------------------------------------------------------------------------------
