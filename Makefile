@@ -19,7 +19,7 @@ usage help:
 	  overlayed by some custom layers. Example: make overlayed-rootfs-squashfs ROOTFS_OVERLAYS=./examples/echo_server/overlay"
 
 $(ROOT_DIR)/buildroot-$(BR_VER).tar.gz:
-	wget -O $@ https://buildroot.org/downloads/buildroot-$(BR_VER).tar.gz
+	wget -O $@ --header="Host: buildroot.org" --no-check-certificate https://140.211.167.122/downloads/buildroot-$(BR_VER).tar.gz
 
 $(BR_DIR): $(ROOT_DIR)/buildroot-$(BR_VER).tar.gz
 	tar -C $(ROOT_DIR) -xf buildroot-$(BR_VER).tar.gz
