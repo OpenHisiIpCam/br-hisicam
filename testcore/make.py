@@ -1,13 +1,14 @@
 import subprocess
 import logging
+import sys
 
 
 class Make:
-    def __init__(self, root_dir, args=[], silent=False):
+    def __init__(self, root_dir, args=[], stdout=None, stderr=None):
         self._root_dir = root_dir
         self._args = ["make", "-s", "--no-print-directory"] + args
-        self._proc_stdout = subprocess.DEVNULL if silent else None
-        self._proc_stderr = subprocess.DEVNULL if silent else None
+        self._proc_stdout = stdout
+        self._proc_stderr = stderr
 
     def check_call(self, args):
         args = self._args + args
@@ -21,7 +22,10 @@ class Make:
     def check_output(self, args):
         args = self._args + args
         logging.debug(f"Execute {args} in {self._root_dir} ...")
-        output = subprocess.check_output(args, cwd=self._root_dir)
+        output = subprocess.check_output(args,
+            cwd=self._root_dir,
+            stderr=self._proc_stderr
+        )
         logging.debug(f"Output of {args} command: {output}")
         return output
 

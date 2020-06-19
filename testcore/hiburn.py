@@ -22,13 +22,13 @@ class Hiburn:
             "--net-host_ip_mask", self.host_ip_mask,
         ]
 
-    def execute(self, args, silent=False):
+    def execute(self, args, stdout=None, stderr=None):
         args = [str(arg) for arg in args]
         logging.debug("Execute: {}".format(" ".join(args)))
         subprocess.check_call(
             [self.app_path, *args],
-            stdout=subprocess.DEVNULL if silent else None,
-            stderr=subprocess.DEVNULL if silent else None
+            stdout=stdout,
+            stderr=stdout
         )
 
     def boot(self, device_id, uimage, rootfs, device_info, **kwargs):

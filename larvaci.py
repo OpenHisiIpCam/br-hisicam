@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 import socket
 import time
 import logging
@@ -32,7 +33,7 @@ def connect(host, port, timeout=60):
 
 def check_board(board):
     print(board, end=" | ", flush=True)
-    br_hisicam = testcore.BrHisiCam(board=board, silent=True)
+    br_hisicam = testcore.BrHisiCam(board=board)
 
     with stage():
         logging.info(f"Build BR...")
@@ -41,7 +42,10 @@ def check_board(board):
     with stage():
         logging.info(f"Build echo server...")
         example_app_path = os.path.join(testcore.BR_HISICAM_ROOT, "examples/echo_server")
-        testcore.Make(example_app_path, silent=True).check_call([f"OUT_DIR={br_hisicam.output_dir}", "build"])
+        testcore.Make(
+            example_app_path,
+            stdout=sys.stderr.fileno()
+        ).check_call([f"OUT_DIR={br_hisicam.output_dir}", "build"])
         br_hisicam.make_overlayed_rootfs(overlays=[os.path.join(example_app_path, "overlay")])
 
     with stage():
@@ -49,7 +53,12 @@ def check_board(board):
         uimage_path = os.path.join(br_hisicam.output_dir, "images/uImage")
         rootfs_image_path = os.path.join(br_hisicam.output_dir, "images/rootfs-overlayed.squashfs")
         info = br_hisicam.make_board_info()
-        testcore.hiburn.boot(board, uimage=uimage_path, rootfs=rootfs_image_path, device_info=info, silent=True)
+        testcore.hiburn.boot(board,
+            uimage=uimage_path,
+            rootfs=rootfs_image_path,
+            device_info=info,
+            stdout=sys.stderr.fileno()
+        )
 
     with stage():
         logging.info(f"Test echo_server runing on device...")

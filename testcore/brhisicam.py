@@ -7,7 +7,7 @@ from .vars import BR_HISICAM_ROOT, BASE_WORKDIR
 
 
 class BrHisiCam:
-    def __init__(self, board, output_dir=None, clean=False, silent=False):
+    def __init__(self, board, output_dir=None, clean=False):
         if output_dir is None:
             output_dir = os.path.join(BASE_WORKDIR, board)
 
@@ -18,7 +18,11 @@ class BrHisiCam:
 
         os.makedirs(output_dir, exist_ok=True)
 
-        self._make = Make(BR_HISICAM_ROOT, args=[f"BOARD={board}", f"OUT_DIR={output_dir}"], silent=silent)
+        self._make = Make(BR_HISICAM_ROOT,
+            args=[f"BOARD={board}", f"OUT_DIR={output_dir}"],
+            stdout=sys.stderr.fileno()  # all logs are redirected to stderr
+        )
+
         self._board = board
         self._output_dir = output_dir
 
