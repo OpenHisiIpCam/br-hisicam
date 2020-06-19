@@ -66,13 +66,14 @@ logging.basicConfig(level=logging.DEBUG)
 
 print(
     " Board | Build BR | Build echo server | Deploy | Test | Total \n"
-    "-------|----------|-------------------|--------|------|-------"
+    "-------|----------|-------------------|--------|------|-------",
+    flush=True
 )
 
 for board in testcore.DEVICE_LIST.keys():
     try:
         check_board(board)
-        print(":thumbsup:")
+        print(":thumbsup:", flush=True)
     except:
         logging.exception(f"Check of board {board} failed")
-        print("")
+        print("", flush=True)
