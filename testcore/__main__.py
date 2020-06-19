@@ -1,5 +1,4 @@
-from .env import BrHisiCam, list_boards
-from . import BR_HISICAM_ROOT, BASE_WORK_DIR
+from . import BR_HISICAM_ROOT, BASE_WORKDIR, DEVICE_LIST, BrHisiCam
 import os
 import argparse
 import logging
@@ -13,9 +12,9 @@ def make_all(br_hisicam):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose",      help="Enabel debug logging", action="store_true")
-    parser.add_argument("-l", "--list",         help="List boards", action="store_true")
+    parser.add_argument("-l", "--list",         help="List available devices", action="store_true")
     parser.add_argument("-b", "--board",        help="Target board ID", metavar="BOARD", type=str)
-    parser.add_argument("-o", "--output_dir",   help=f"Output directory, default {BASE_WORK_DIR}/<BOARD>", type=str)
+    parser.add_argument("-o", "--output_dir",   help=f"Output directory (default: {BASE_WORKDIR}/<BOARD>)", type=str)
     parser.add_argument("-c", "--clean",        help="Clean before building", action="store_true")
 
     subparsers = parser.add_subparsers(title="Action")
@@ -32,7 +31,7 @@ def main():
     logging.basicConfig(level=(logging.DEBUG if args.verbose else logging.INFO))
 
     if args.list:
-        print("\n".join(list_boards()))
+        print("\n".join(DEVICE_LIST.keys()))
         exit(0)
 
     if args.output_dir is None:

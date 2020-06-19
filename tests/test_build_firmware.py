@@ -23,7 +23,7 @@ def cam_test(board):
     logging.info(f"Build uImage and rootfs for {board}...")
     br_hisicam = BrHisiCam(board=board)
     
-    br_hisicam.make_all()
+    br_hisicam.make_all() 
 
     uimage_path = os.path.join(br_hisicam.output_dir, "images/uImage")
     assert os.path.exists(uimage_path)
@@ -55,9 +55,9 @@ def test_cam1_jvt_s274h19v_l29_hi3519v101_imx274():   #OK
   board = "jvt_s274h19v-l29_hi3519v101_imx274"
   cam_test(board)
 
-#def test_cam2_xm_ivg_85hf20pya_s_hi3516ev200_imx307():    #OK
-#    board = "xm_ivg-85hf20pya-s_hi3516ev200_imx307"
-#    cam_test(board)
+def test_cam2_xm_ivg_85hf20pya_s_hi3516ev200_imx307():    #OK
+   board = "xm_ivg-85hf20pya-s_hi3516ev200_imx307"
+   cam_test(board)
 
 #def test_cam3_xm_53h20_s_hi3516cv100_imx122():   #OK
 #    board = "xm_53h20-s_hi3516cv100_imx122"
