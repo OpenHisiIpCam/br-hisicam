@@ -38,7 +38,7 @@ install-ubuntu-deps:
 
 
 list-configs:
-	@ls -1 $(BR_EXT_HISICAM)/configs
+	@ls -1 $(BR_EXT_HISICAM_DIR)/configs
 
 
 # -------------------------------------------------------------------------------------------------
@@ -82,6 +82,15 @@ overlayed-rootfs-%: $(OUT_DIR)/.config
 	$(BOARD_MAKE) $(subst overlayed-,,$@) \
 	    BASE_TARGET_DIR=$(abspath $(ROOTFS_OVERLAYED_DIR)) \
 	    ROOTFS_$(call UPPERCASE,$(subst overlayed-rootfs-,,$@))_FINAL_IMAGE_NAME=$(ROOTFS_OVERLAYED_IMAGE).$(subst overlayed-rootfs-,,$@)
+
+
+# -------------------------------------------------------------------------------------------------
+board-info:
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config | grep RAM_LINUX_SIZE
+	$(eval VENDOR 	:= $(shell echo $(BOARD) | cut -d "_" -f 1))
+	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config | grep FAMILY | cut -d "=" -f 2))
+	$(eval CHIP	:= $(shell echo $(BOARD) | cut -d "_" -f 3))
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(FAMILY)/$(CHIP).config
 
 
 # -------------------------------------------------------------------------------------------------

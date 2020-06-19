@@ -1,11 +1,9 @@
 import os
-import pytest
-import subprocess
 import logging
 import socket
 import time
-from testenv import DEVICE_LIST, br_hisicam, hiburn
-
+import common
+from testcore import BR_HISICAM_ROOT, DEVICE_LIST, Make, BrHisiCam, hiburn
 
 
 def connect(host, port, timeout=60):
@@ -20,19 +18,31 @@ def connect(host, port, timeout=60):
             if time.monotonic() > end_time:
                 raise
 
+
 def cam_test(board):
     logging.info(f"Build uImage and rootfs for {board}...")
-    br_hisicam.make_board(board)
+    br_hisicam = BrHisiCam(board=board)
+    
+    br_hisicam.make_all()
 
-    uimage_path = br_hisicam.uimage_path(board)
+    uimage_path = os.path.join(br_hisicam.output_dir, "images/uImage")
     assert os.path.exists(uimage_path)
 
-    rootfs_image_path = br_hisicam.rootfs_image_path(board)
+    rootfs_image_path = os.path.join(br_hisicam.output_dir, "images/rootfs.squashfs")
     assert os.path.exists(rootfs_image_path)
 
+    example_app_path = os.path.join(BR_HISICAM_ROOT, "examples/echo_server")
+    logging.info(f"Build example echo server...")
+    Make(example_app_path).check_call([f"OUT_DIR={br_hisicam.output_dir}", "build"])
+
+    logging.info(f"Build overlayed rootfs image...")
+    br_hisicam.make_overlayed_rootfs(overlays=[os.path.join(example_app_path, "overlay")])
+    overlayed_rootfs_image_path = os.path.join(br_hisicam.output_dir, "images/rootfs-overlayed.squashfs")
+    assert os.path.exists(overlayed_rootfs_image_path)
+
     logging.info(f"Upload images on {board} test device and boot it...")
-    info = br_hisicam.info(board)
-    hiburn.boot(board, uimage=uimage_path, rootfs=rootfs_image_path, device_info=info)
+    info = br_hisicam.make_board_info()
+    hiburn.boot(board, uimage=uimage_path, rootfs=overlayed_rootfs_image_path, device_info=info)
 
     logging.info(f"Test echo_server runing on device...")
     conn = connect(DEVICE_LIST[board]["ip_addr"], 20040)
@@ -41,9 +51,9 @@ def cam_test(board):
     resp = conn.recv(1024).decode("ascii", errors="ignore")
     assert resp == f"YOU SAID: {msg}"
 
-#def test_cam1_jvt_s274h19v_l29_hi3519v101_imx274():   #OK
-#   board = "jvt_s274h19v-l29_hi3519v101_imx274"
-#   cam_test(board)
+def test_cam1_jvt_s274h19v_l29_hi3519v101_imx274():   #OK
+  board = "jvt_s274h19v-l29_hi3519v101_imx274"
+  cam_test(board)
 
 #def test_cam2_xm_ivg_85hf20pya_s_hi3516ev200_imx307():    #OK
 #    board = "xm_ivg-85hf20pya-s_hi3516ev200_imx307"
@@ -109,7 +119,7 @@ def cam_test(board):
 #    board = "ssqvision_on290h16d_hi3516dv100_imx290"
 #    cam_test(board)
 
-def test_cam30_unknown_unknown_xm530_unknown():   #OK
-    board = "unknown_unknown_xm530_unknown"
-    cam_test(board)
+# def test_cam30_unknown_unknown_xm530_unknown():   #OK
+#     board = "unknown_unknown_xm530_unknown"
+#     cam_test(board)
 
