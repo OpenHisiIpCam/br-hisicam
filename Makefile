@@ -19,7 +19,7 @@ usage help:
 	  overlayed by some custom layers. Example: make overlayed-rootfs-squashfs ROOTFS_OVERLAYS=./examples/echo_server/overlay"
 
 $(ROOT_DIR)/buildroot-$(BR_VER).tar.gz:
-	wget -O $@ https://buildroot.org/downloads/buildroot-$(BR_VER).tar.gz
+	wget -O $@ --header="Host: buildroot.org" --no-check-certificate https://140.211.167.122/downloads/buildroot-$(BR_VER).tar.gz
 
 $(BR_DIR): $(ROOT_DIR)/buildroot-$(BR_VER).tar.gz
 	tar -C $(ROOT_DIR) -xf buildroot-$(BR_VER).tar.gz
@@ -82,6 +82,15 @@ overlayed-rootfs-%: $(OUT_DIR)/.config
 	$(BOARD_MAKE) $(subst overlayed-,,$@) \
 	    BASE_TARGET_DIR=$(abspath $(ROOTFS_OVERLAYED_DIR)) \
 	    ROOTFS_$(call UPPERCASE,$(subst overlayed-rootfs-,,$@))_FINAL_IMAGE_NAME=$(ROOTFS_OVERLAYED_IMAGE).$(subst overlayed-rootfs-,,$@)
+
+
+# -------------------------------------------------------------------------------------------------
+board-info:
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config | grep RAM_LINUX_SIZE
+	$(eval VENDOR 	:= $(shell echo $(BOARD) | cut -d "_" -f 1))
+	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config | grep FAMILY | cut -d "=" -f 2))
+	$(eval CHIP	:= $(shell echo $(BOARD) | cut -d "_" -f 3))
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(FAMILY)/$(CHIP).config
 
 
 # -------------------------------------------------------------------------------------------------
