@@ -15,8 +15,12 @@ usage help:
 	- make prepare - download and unpack buildroot\n\
 	- make list-configs - show avalible hardware configs list\n\
 	- make BOARD=<BOARD-ID> all - build all needed for a board (toolchain, kernel and rootfs images)\n\
-	- make overlayed-rootfs-<FS-TYPE> ROOTFS_OVERLAYS=... - create rootfs image that contains original Buildroot target dir\n\
-	  overlayed by some custom layers. Example: make overlayed-rootfs-squashfs ROOTFS_OVERLAYS=./examples/echo_server/overlay"
+	- make BOARD=<BOARD-ID> board-info - write to stdout information about selected board\n\
+	- make overlayed-rootfs-<FS-TYPE> ROOTFS_OVERLAYS=... - create rootfs image that contains original\n\
+	  Buildroot target dir overlayed by some custom layers.\n\
+	  Example:\n\
+	      make overlayed-rootfs-squashfs ROOTFS_OVERLAYS=./examples/echo_server/overlay\n\
+	"
 
 $(ROOT_DIR)/buildroot-$(BR_VER).tar.gz:
 	wget -O $@ --header="Host: buildroot.org" --no-check-certificate https://140.211.167.122/downloads/buildroot-$(BR_VER).tar.gz
@@ -71,6 +75,7 @@ all: $(OUT_DIR)/.config $(OUT_DIR)/toolchain-params.mk
 # -------------------------------------------------------------------------------------------------
 # create rootfs image that contains original Buildroot target dir overlayed by some custom layers
 # space-separated list of overlays
+
 ROOTFS_OVERLAYS ?=
 # overlayed rootfs directory
 ROOTFS_OVERLAYED_DIR ?= $(OUT_DIR)/target-overlayed
