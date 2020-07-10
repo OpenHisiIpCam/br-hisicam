@@ -35,7 +35,7 @@ def main():
         exit(0)
 
     if args.output_dir is None:
-        args.output_dir = os.path.join(BASE_WORK_DIR, args.board)
+        args.output_dir = os.path.join(BASE_WORKDIR, args.board)
 
     br_hisicam = BrHisiCam(
         board=args.board,
