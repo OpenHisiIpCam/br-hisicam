@@ -57,7 +57,7 @@ endif
 	$(BOARD_MAKE) BR2_DEFCONFIG=$(BR_EXT_HISICAM_DIR)/configs/$(BOARD)_defconfig defconfig
 
 
-$(OUT_DIR)/toolchain-params.mk: $(OUT_DIR)/.config
+$(OUT_DIR)/toolchain-params.mk: $(OUT_DIR)/.config $(SCRIPTS_DIR)/create_toolchain_binding.sh
 	eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
 		&& $(SCRIPTS_DIR)/create_toolchain_binding.sh $(OUT_DIR)/host/bin $$GNU_TARGET_NAME > $@
 
@@ -91,6 +91,7 @@ board-info:
 	$(eval FAMILY 	:= $(shell cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config | grep FAMILY | cut -d "=" -f 2))
 	$(eval CHIP	:= $(shell echo $(BOARD) | cut -d "_" -f 3))
 	@cat $(BR_EXT_HISICAM_DIR)/board/$(FAMILY)/$(CHIP).config
+	@cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config
 
 
 # -------------------------------------------------------------------------------------------------
