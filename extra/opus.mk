@@ -1,0 +1,7 @@
+BR2_SHARED_LIBS=n BR2_STATIC_LIBS=n BR2_SHARED_STATIC_LIBS=y
+
+
+opus: $(OUT_DIR)/.config
+	@echo "Build libopus" 
+	$(BOARD_MAKE) BR2_SHARED_LIBS=n BR2_STATIC_LIBS=n BR2_SHARED_STATIC_LIBS=y \
+		opus

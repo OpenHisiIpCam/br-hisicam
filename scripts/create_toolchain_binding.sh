@@ -18,3 +18,11 @@ RANLIB := \$(TOOLCHAIN)-ranlib
 NM := \$(TOOLCHAIN_NAME)-nm
 STRIP := \$(TOOLCHAIN_NAME)-strip
 EOF
+
+EXTRA_BINS=(go gofmt m4 swig)
+
+for I in ${EXTRA_BINS[*]}; do
+    if [ -e $TOOLCHAIN_DIR/$I ]; then
+        echo "${I^^} := \$(TOOLCHAIN_DIR)/$I"
+    fi
+done

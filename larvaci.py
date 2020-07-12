@@ -57,7 +57,8 @@ def check_board(board):
             uimage=uimage_path,
             rootfs=rootfs_image_path,
             device_info=info,
-            stdout=sys.stderr.fileno()
+            stdout=sys.stderr.fileno(),
+            timeout=180
         )
 
     with stage():

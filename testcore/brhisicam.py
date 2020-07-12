@@ -27,8 +27,8 @@ class BrHisiCam:
         self._board = board
         self._output_dir = output_dir
 
-    def make_all(self):
-        self._make.check_call(["all"])
+    def make_all(self, *args):
+        self._make.check_call(["all", *args])
 
     def make_board_info(self):
         return parse_kv_lines(self._make.get_output_lines(["board-info"]))
