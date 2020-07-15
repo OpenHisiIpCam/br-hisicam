@@ -5,7 +5,7 @@ BR_EXT_HISICAM_DIR := $(ROOT_DIR)/br-ext-hisicam
 SCRIPTS_DIR        := $(ROOT_DIR)/scripts
 BOARDS             := $(shell ls -1 $(BR_EXT_HISICAM_DIR)/configs)
 
-.PHONY: usage help prepare install-ubuntu-deps all run-tests overlayed-rootfs-%
+.PHONY: usage help prepare install-ubuntu-deps all toolchain-params run-tests overlayed-rootfs-%
 
 usage help:
 	@echo \
@@ -53,7 +53,13 @@ OUT_DIR ?= $(ROOT_DIR)/output
 override OUT_DIR := $(abspath $(OUT_DIR))
 BOARD_MAKE := $(MAKE) -C $(BR_DIR) BR2_EXTERNAL=$(BR_EXT_HISICAM_DIR) O=$(OUT_DIR)
 
+define CREATE_TOOLCHAIN_PARAMS
+    eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
+    && $(SCRIPTS_DIR)/create_toolchain_binding.sh $(OUT_DIR)/host/bin $$GNU_TARGET_NAME \
+    > $(OUT_DIR)/toolchain-params.mk
+endef
 
+# -------------------------------------------------------------------------------------------------
 $(OUT_DIR)/.config:
 ifndef BOARD
 	@echo "Variable BOARD must be defined to initialize output directory" >&2 && exit 1
@@ -62,8 +68,7 @@ endif
 
 
 $(OUT_DIR)/toolchain-params.mk: $(OUT_DIR)/.config $(SCRIPTS_DIR)/create_toolchain_binding.sh
-	eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
-		&& $(SCRIPTS_DIR)/create_toolchain_binding.sh $(OUT_DIR)/host/bin $$GNU_TARGET_NAME > $@
+	$(CREATE_TOOLCHAIN_PARAMS)
 
 
 # -------------------------------------------------------------------------------------------------
@@ -71,6 +76,11 @@ $(OUT_DIR)/toolchain-params.mk: $(OUT_DIR)/.config $(SCRIPTS_DIR)/create_toolcha
 all: $(OUT_DIR)/.config $(OUT_DIR)/toolchain-params.mk
 	$(BOARD_MAKE) all
 
+
+# -------------------------------------------------------------------------------------------------
+# re-create params file
+toolchain-params:
+	$(CREATE_TOOLCHAIN_PARAMS)
 
 # -------------------------------------------------------------------------------------------------
 # create rootfs image that contains original Buildroot target dir overlayed by some custom layers
