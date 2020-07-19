@@ -53,7 +53,7 @@ class Make:
         with maybe_open1(self._proc_stderr) as stderr:
             output = subprocess.check_output(args,
                 cwd=self._root_dir,
-                stderr=self.stderr
+                stderr=stderr
             )
 
         logging.debug(f"Output of {args} command: {output}")

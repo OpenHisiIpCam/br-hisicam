@@ -28,13 +28,14 @@ class Hiburn:
         subprocess.check_call(
             [self.app_path, *args],
             stdout=stdout,
-            stderr=stdout,
+            stderr=stderr,
             timeout=timeout
         )
 
     def boot(self, device_id, uimage, rootfs, device_info, **kwargs):
         self.execute(args=[
             *self.get_device_args(device_id),
+            "--verbose",
             "--mem-start_addr", device_info["MEM_START_ADDR"],
             "--mem-linux_size", device_info["RAM_LINUX_SIZE"],
             "boot",
