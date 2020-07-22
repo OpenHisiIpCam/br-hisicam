@@ -1,4 +1,4 @@
-from . import BR_HISICAM_ROOT, BASE_WORKDIR, DEVICE_LIST, BrHisiCam
+from . import BR_HISICAM_ROOT, BASE_WORKDIR, DEVICE_LIST, BrHisiCam, hiburn
 import os
 import argparse
 import logging
@@ -6,6 +6,16 @@ import logging
 
 def make_all(br_hisicam):
     br_hisicam.make_all()
+
+
+def deploy(br_hisicam):
+    hiburn.boot(
+        device_id=br_hisicam.board,
+        uimage=os.path.join(br_hisicam.output_dir, "images/uImage"),
+        rootfs=os.path.join(br_hisicam.output_dir, "images/rootfs.squashfs"),
+        device_info=br_hisicam.make_board_info(),
+        timeout=180
+    )
 
 
 # -------------------------------------------------------------------------------------------------
@@ -19,7 +29,7 @@ def main():
 
     subparsers = parser.add_subparsers(title="Action")
     for action in (
-        make_all,
+        make_all, deploy
     ):
         action_parser = subparsers.add_parser(action.__name__,
             help=action.__doc__.strip() if action.__doc__ else None

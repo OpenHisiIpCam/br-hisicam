@@ -43,3 +43,7 @@ class BrHisiCam:
     @property
     def output_dir(self):
         return self._output_dir
+
+    @property
+    def board(self):
+        return self._board
