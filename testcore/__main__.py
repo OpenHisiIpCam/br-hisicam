@@ -8,6 +8,10 @@ def make_all(br_hisicam):
     br_hisicam.make_all()
 
 
+def show_params(br_hisicam):
+    print(br_hisicam.make_board_info())
+
+
 def deploy(br_hisicam):
     hiburn.boot(
         device_id=br_hisicam.board,
@@ -29,7 +33,7 @@ def main():
 
     subparsers = parser.add_subparsers(title="Action")
     for action in (
-        make_all, deploy
+        make_all, deploy, show_params
     ):
         action_parser = subparsers.add_parser(action.__name__,
             help=action.__doc__.strip() if action.__doc__ else None
