@@ -5,7 +5,7 @@ BR_EXT_HISICAM_DIR := $(ROOT_DIR)/br-ext-hisicam
 SCRIPTS_DIR        := $(ROOT_DIR)/scripts
 BOARDS             := $(shell ls -1 $(BR_EXT_HISICAM_DIR)/configs)
 
-.PHONY: usage help prepare install-ubuntu-deps all toolchain-params run-tests overlayed-rootfs-%
+.PHONY: usage help prepare install-ubuntu-deps all toolchain toolchain-params run-tests overlayed-rootfs-%
 
 usage help:
 	@echo \
@@ -46,12 +46,54 @@ list-configs:
 
 
 # -------------------------------------------------------------------------------------------------
+BR_MAKE := $(MAKE) -C $(BR_DIR) BR2_EXTERNAL=$(BR_EXT_HISICAM_DIR)
 OUT_DIR ?= $(ROOT_DIR)/output
 
 # Buildroot considers relative paths relatively to its' own root directory. So we use absolute paths
-# to avoid ambiguity
+# to avoid this ambiguity
 override OUT_DIR := $(abspath $(OUT_DIR))
-BOARD_MAKE := $(MAKE) -C $(BR_DIR) BR2_EXTERNAL=$(BR_EXT_HISICAM_DIR) O=$(OUT_DIR)
+BOARD_MAKE := $(BR_MAKE) O=$(OUT_DIR)
+
+# Try to read BOARD variable from initialized output directory
+ifneq ($(realpath $(OUT_DIR)/.board),)
+    ifndef BOARD
+        $(eval BOARD := $(shell cat $(OUT_DIR)/.board))
+        $(info -- Deal with BOARD=$(BOARD))
+    endif
+endif
+
+
+# =================================================================================================
+# everything below is for defined BOARD variable only
+ifdef BOARD
+
+FAMILY := $(shell cat $(BR_EXT_HISICAM_DIR)/board/$(BOARD)/config | grep FAMILY | cut -d "=" -f 2)
+BOARD_DEFCONFIG := $(BR_EXT_HISICAM_DIR)/configs/$(BOARD)_defconfig
+
+# -------------------------------------------------------------------------------------------------
+# toolchain
+ifndef FAMILY
+    $(error "FAMILY variable must be defined")
+endif
+
+TOOLCHAIN_DEFCONFIG := $(BR_EXT_HISICAM_DIR)/configs/toolchains/$(FAMILY)_defconfig
+TOOLCHAINS_DIR ?= $(ROOT_DIR)/toolchains
+TOOLCHAIN_DIR := $(TOOLCHAINS_DIR)/$(FAMILY)
+
+$(TOOLCHAIN_DIR): $(TOOLCHAIN_DEFCONFIG)
+ifeq ($(USE_TOOLCHAIN_STORAGE),y)
+	$(ROOT_DIR)/scripts/make_toolchain.sh --br $(BR_DIR) --td $(TOOLCHAINS_DIR) --family $(FAMILY) --use-storage
+else
+	$(ROOT_DIR)/scripts/make_toolchain.sh --br $(BR_DIR) --td $(TOOLCHAINS_DIR) --family $(FAMILY) 
+endif 
+
+toolchain: $(TOOLCHAIN_DIR)
+
+# -------------------------------------------------------------------------------------------------
+# such targets (with trimmed `br-` prefix) are passed to Buildroot's Makefile
+br_toolchain-%: $(OUT_DIR)/.config
+	$(BOARD_MAKE) $(subst br_toolchain-,,$@)
+
 
 define CREATE_TOOLCHAIN_PARAMS
     eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
@@ -60,27 +102,26 @@ define CREATE_TOOLCHAIN_PARAMS
 endef
 
 # -------------------------------------------------------------------------------------------------
-$(OUT_DIR)/.config:
-ifndef BOARD
-	@echo "Variable BOARD must be defined to initialize output directory" >&2 && exit 1
-endif
-	$(BOARD_MAKE) BR2_DEFCONFIG=$(BR_EXT_HISICAM_DIR)/configs/$(BOARD)_defconfig defconfig
-
-
-$(OUT_DIR)/toolchain-params.mk: $(OUT_DIR)/.config $(SCRIPTS_DIR)/create_toolchain_binding.sh
-	$(CREATE_TOOLCHAIN_PARAMS)
+# output directory initialization
+$(OUT_DIR)/.config: $(BOARD_DEFCONFIG)
+	rm -rf $(@D)
+	$(BOARD_MAKE) BR2_DEFCONFIG=$< defconfig
+	@echo $(BOARD) >$(@D)/.board
 
 
 # -------------------------------------------------------------------------------------------------
 # build all needed for a board
-all: $(OUT_DIR)/.config $(OUT_DIR)/toolchain-params.mk
+all: $(OUT_DIR)/.config $(TOOLCHAIN_DIR)
+	$(SCRIPTS_DIR)/update_config_with_external_toolchain.sh $< $(TOOLCHAIN_DIR)
 	$(BOARD_MAKE) all
+	$(CREATE_TOOLCHAIN_PARAMS)
 
 
 # -------------------------------------------------------------------------------------------------
 # re-create params file
 toolchain-params:
 	$(CREATE_TOOLCHAIN_PARAMS)
+
 
 # -------------------------------------------------------------------------------------------------
 # create rootfs image that contains original Buildroot target dir overlayed by some custom layers
@@ -124,7 +165,9 @@ run-tests:
 # there are some extra targets of specific packages
 include $(sort $(wildcard $(ROOT_DIR)/extra/*.mk))
 
+endif  # ifdef BOARD
+# =================================================================================================
 
-# -------------------------------------------------------------------------------------------------
+
 # util stuff is below
 UPPERCASE = $(shell echo $(1) | tr a-z A-Z)
