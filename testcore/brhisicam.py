@@ -23,7 +23,7 @@ class BrHisiCam:
             stdout = sys.stderr.fileno()  # all output is redirected to stderr by default
 
         self._make = Make(BR_HISICAM_ROOT,
-            args=[f"BOARD={board}", f"OUT_DIR={output_dir}"],
+            args=[f"BOARD={board}", f"OUT_DIR={output_dir}", "USE_TOOLCHAIN_STORAGE=y"],
             stdout=stdout, stderr=stderr
         )
 
