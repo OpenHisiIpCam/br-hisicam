@@ -89,11 +89,9 @@ endif
 
 toolchain: $(TOOLCHAIN_DIR)
 
-# -------------------------------------------------------------------------------------------------
-# such targets (with trimmed `br-` prefix) are passed to Buildroot's Makefile
-br_toolchain-%: $(OUT_DIR)/.config
-	$(BOARD_MAKE) $(subst br_toolchain-,,$@)
-
+toolchain-menuconfig:
+	rm -rf $(BR_DIR)/output
+	$(BR_MAKE) BR2_DEFCONFIG=$(TOOLCHAIN_DEFCONFIG) defconfig menuconfig savedefconfig
 
 define CREATE_TOOLCHAIN_PARAMS
     eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
