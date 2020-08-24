@@ -94,8 +94,8 @@ toolchain-menuconfig:
 	$(BR_MAKE) BR2_DEFCONFIG=$(TOOLCHAIN_DEFCONFIG) defconfig menuconfig savedefconfig
 
 define CREATE_TOOLCHAIN_PARAMS
-    eval $$($(BOARD_MAKE) -s --no-print-directory VARS=GNU_TARGET_NAME printvars) \
-    && $(SCRIPTS_DIR)/create_toolchain_binding.sh $(OUT_DIR)/host/bin $$GNU_TARGET_NAME \
+    eval $$($(BOARD_MAKE) -s --no-print-directory VARS=BR2_TOOLCHAIN_EXTERNAL_PREFIX printvars) \
+    && $(SCRIPTS_DIR)/create_toolchain_binding.sh $(OUT_DIR)/host/bin $$BR2_TOOLCHAIN_EXTERNAL_PREFIX \
     > $(OUT_DIR)/toolchain-params.mk
 endef
 
