@@ -6,7 +6,7 @@
 
 ---
 
-<p align="center">Buildroot based sample firmware with embedded GoHisiCam for HiSilicon`s System-On-a-Chip ip cameras</p>
+<p align="center">Buildroot based sample firmware for HiSilicon`s System-On-a-Chip ip cameras</p>
 <p align="center"><em>Part of OpenHisiIpCam project</em></p>
 
 ## :pencil: Table of Contents
@@ -15,13 +15,12 @@
 - [Deploy](#deploy)
 - [Technical notes](#technical_notes)
 - [Target hardware](#target_hardware)
-- [Futher information](#futher_information)
 
 ## :eyeglasses: About <a name="about"></a>
 
-Main task of this repo is to bring ability to run [GoHisiCam](https://github.com/OpenHisiIpCam/gohisicam-releases) application
-(*Audio/video core software for HiSilicon`s System-On-a-Chip ip cameras written in Go and C*). 
-Also this repo can be used as starting point for ip camera research or some other associated project.
+**This repo is freezed, will not be maintained or improved.**
+
+This repo can be used as starting point for ip camera research or some other associated project.
 
 Here term **firmware** means full set of software needed for running embedded device. In our case it is bootloader, Linux kernel, filesystem, 
 that contains full software set including system utilities, applications that manage audio/video pipeline, business logic and service functions.
@@ -300,15 +299,4 @@ At the moment test covers:
 |xm_83h40pl-b_hi3516av100_ov4689		|OK	|
 |ssqvision_unknown_hi3519v101_imx326		|Uboot net is not working |
 |ssqvision_on290h16d_hi3516dv100_imx290		|OK	|
-
-
-## :exclamation: Futher information <a name="futher_information"></a>
-
-Story about full functional ip camera firmware is large topic that requires skills and knowledge from different areas. 
-It`s really difficult to cover everything in once, so be patient, progress may not go as fast as you might expect.
-
-Also at the moment we focused on [GoHisiCam](https://github.com/OpenHisiIpCam/gohisicam-releases) development and firmware is background task.
-
-If you are interested in topic, we recommend you read our website and other [resources](https://www.openhisiipcam.org/resources/) 
-(there are links to other websites and discussion groups about the topics).
 
